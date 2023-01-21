@@ -1,5 +1,6 @@
 package com.amaurypm.gamesdm.view.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -8,11 +9,13 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amaurypm.gamesdm.databinding.ActivityMainBinding
 import com.amaurypm.gamesdm.model.Game
-import com.amaurypm.gamesdm.model.GamesApi
+import com.amaurypm.gamesdm.network.GamesApi
+import com.amaurypm.gamesdm.network.RetrofitService
 import com.amaurypm.gamesdm.util.Constants
 import com.amaurypm.gamesdm.view.adapters.GamesAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,8 +32,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         CoroutineScope(Dispatchers.IO).launch {
+
+            Log.d(Constants.LOGTAG, "Hilo al iniciar la corrutina: ${Thread.currentThread().name}")
+
             val call =
-                Constants.getRetrofit().create(GamesApi::class.java)
+                RetrofitService.getRetrofit().create(GamesApi::class.java)
                     .getGames("cm/games/games_list.php") //En el servidor serverbpw y en localhost
             //Constants.getRetrofit().create(GamesApi::class.java).getGames("games/games_list")  //Con Apiary
 
@@ -51,6 +57,8 @@ class MainActivity : AppCompatActivity() {
                             Toast.LENGTH_LONG
                         ).show()
                     }*/
+
+                    Log.d(Constants.LOGTAG, "Hilo en el onResponse: ${Thread.currentThread().name}")
 
                     binding.pbConexion.visibility = View.GONE
 
@@ -74,7 +82,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun selectedGame(game: Game) {
+        val parametros = Bundle().apply {
+            putString("id", game.id)
+        }
 
+        val intent = Intent(this, DetailsActivity::class.java).apply {
+            putExtras(parametros)
+        }
+
+        startActivity(intent)
     }
 
 }

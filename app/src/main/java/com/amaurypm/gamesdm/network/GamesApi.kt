@@ -1,5 +1,7 @@
-package com.amaurypm.gamesdm.model
+package com.amaurypm.gamesdm.network
 
+import com.amaurypm.gamesdm.model.Game
+import com.amaurypm.gamesdm.model.GameDetail
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -23,7 +25,7 @@ interface GamesApi {
     ): Call<GameDetail>
 
     //games/game_detail/98746/amaury
-    @GET("games/game_detail/{id}/{name}")
+    @GET("games/game_detail/{id}")
     fun getGameDetailApiary(
         @Path("id") id: String?
     ): Call<GameDetail>

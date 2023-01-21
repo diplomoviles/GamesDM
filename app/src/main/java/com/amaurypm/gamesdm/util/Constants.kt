@@ -3,6 +3,7 @@ package com.amaurypm.gamesdm.util
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+
 /**
  * Creado por Amaury Perea Matsumura el 14/01/23
  */
@@ -14,8 +15,4 @@ object Constants {
 
     const val LOGTAG = "LOGS"
 
-    fun getRetrofit(): Retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
 }
